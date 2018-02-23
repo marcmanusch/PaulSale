@@ -15,11 +15,6 @@
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service class="PaulSale\Subscriber\CalculatePrice" id="paul_sale.subscriber.calculate_price">
-            <argument id="service_container" type="service"/>
-            <tag name="shopware.event_subscriber"/>
-        </service>
-
         <service class="PaulSale\Subscriber\Backend" id="paul_sale.subscriber.backend">
             <argument id="service_container" type="service"/>
             <tag name="shopware.event_subscriber"/>

@@ -28,6 +28,7 @@ class Frontend implements SubscriberInterface
     {
         return [
             'Enlight_Controller_Action_PostDispatchSecure_Frontend' => 'onFrontendPostDispatch',
+            'Shopware_Modules_Basket_getPriceForUpdateArticle_FilterPrice' => 'checkRabatt'
         ];
     }
 
@@ -44,34 +45,9 @@ class Frontend implements SubscriberInterface
 
         // get plugin config
         $paulSaleActive = $config['paulSaleActive'];
-        $paulSaleVon = $config['paulSaleVon'];
-        $paulSaleBis = $config['paulSaleBis'];
-        $paulSalePercent = $config['paulSalePercent'];
-        $paulSaleCategoryID = $config['paulSaleCategoryID'];
-
-
-        //check rules
-        $paulShowSale = false;
-
-        // Get category path IDs
-        $category = $view->getAssign('sBreadcrumb');
-        $ids = [];
-
-        foreach ($category as $cat) {
-            $ids[] = $cat['id'];
-        }
-
-        if (in_array($paulSaleCategoryID, $ids)) {
-            $paulShowSale = true;
-        }
-
 
         // assign to frontend
-        $view->assign('paulShowSale', $paulShowSale);
         $view->assign('paulSaleActive', $paulSaleActive);
-        $view->assign('paulSaleVon', $paulSaleVon);
-        $view->assign('paulSaleBis', $paulSaleBis);
-        $view->assign('paulSalePercent', $paulSalePercent);
-
     }
+
 }

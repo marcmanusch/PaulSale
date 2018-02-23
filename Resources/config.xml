@@ -8,25 +8,5 @@
             <label>Aktiv</label>
         </element>
 
-        <element required="true" type="datetime">
-            <name>paulSaleVon</name>
-            <label>Von:</label>
-        </element>
-
-        <element required="true" type="datetime">
-            <name>paulSaleBis</name>
-            <label>Bis:</label>
-        </element>
-
-        <element required="true" type="number">
-            <name>paulSalePercent</name>
-            <label>Rabatt in %:</label>
-        </element>
-
-        <element type="text">
-            <name>paulSaleCategoryID</name>
-            <label>Kategorie ID</label>
-        </element>
-
     </elements>
 </config>
