@@ -1,6 +1,6 @@
 <?php
 
-namespace PaulQuestions\Subscriber;
+namespace PaulSale\Subscriber;
 
 use Enlight\Event\SubscriberInterface;
 use Shopware\Components\Theme\LessDefinition;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CompileLess
- * @package PaulTabSetKomponenten\Subscriber
+ * @package PaulSale\Subscriber
  */
 class CompileLess implements SubscriberInterface
 {
@@ -28,7 +28,7 @@ class CompileLess implements SubscriberInterface
     /**
      * @inheritdoc
      */
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             'Theme_Compiler_Collect_Plugin_Less' => 'onCollectLess'
@@ -41,9 +41,9 @@ class CompileLess implements SubscriberInterface
      * @return LessDefinition
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
-    public function onCollectLess(\Enlight_Event_EventArgs $args): LessDefinition
+    public function onCollectLess(\Enlight_Event_EventArgs $args)
     {
-        $pluginDir = $this->container->getParameter('paul_questions.plugin_dir');
+        $pluginDir = $this->container->getParameter('paul_sale.plugin_dir');
 
         return new LessDefinition(
             [],

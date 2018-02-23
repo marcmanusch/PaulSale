@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../engine/Shopware/Components/Plugin/schema/config.xsd">
+    <elements>
+
+        <element type="boolean">
+            <name>paulSaleActive</name>
+            <label>Aktiv</label>
+        </element>
+
+        <element required="true" type="datetime">
+            <name>paulSaleVon</name>
+            <label>Von:</label>
+        </element>
+
+        <element required="true" type="datetime">
+            <name>paulSaleBis</name>
+            <label>Bis:</label>
+        </element>
+
+        <element required="true" type="number">
+            <name>paulSalePercent</name>
+            <label>Rabatt in %:</label>
+        </element>
+
+        <element type="text">
+            <name>paulSaleCategoryID</name>
+            <label>Kategorie ID</label>
+        </element>
+
+    </elements>
+</config>
