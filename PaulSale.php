@@ -10,15 +10,9 @@ namespace PaulSale;
 
 use Doctrine\DBAL\Schema\MySqlSchemaManager;
 use Doctrine\ORM\Tools\SchemaTool;
-use PaulQuestions\Models\Answer;
-use PaulQuestions\Models\Question;
-use Shopware\Bundle\AttributeBundle\Service\CrudService;
-use Shopware\Components\Model\ModelManager;
+use PaulSale\Models\Sale;
 use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\InstallContext;
-use Shopware\Components\Plugin\Context\UninstallContext;
-use Shopware\Models\Article\Article;
-use Shopware\Models\Customer\Customer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 
@@ -31,5 +25,29 @@ class PaulSale extends Plugin
     {
         $container->setParameter('paul_sale.plugin_dir', $this->getPath());
         parent::build($container);
+    }
+
+    public function install(InstallContext $context)
+    {
+        $this->updateSchema();
+    }
+
+    private function updateSchema()
+    {
+        $tool = new SchemaTool(Shopware()->Container()->get('models'));
+        $schemas = [
+            Shopware()->Container()->get('models')->getClassMetadata(Sale::class),
+        ];
+
+        /** @var MySqlSchemaManager $schemaManager */
+        $schemaManager = Shopware()->Container()->get('models')->getConnection()->getSchemaManager();
+
+        foreach ($schemas as $class) {
+            if (!$schemaManager->tablesExist($class->getTableName())) {
+                $tool->createSchema([$class]);
+            } else {
+                $tool->updateSchema([$class], true);
+            }
+        }
     }
 }

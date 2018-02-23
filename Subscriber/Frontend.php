@@ -69,6 +69,9 @@ class Frontend implements SubscriberInterface
         // assign to frontend
         $view->assign('paulShowSale', $paulShowSale);
         $view->assign('paulSaleActive', $paulSaleActive);
+        $view->assign('paulSaleVon', $paulSaleVon);
+        $view->assign('paulSaleBis', $paulSaleBis);
+        $view->assign('paulSalePercent', $paulSalePercent);
 
     }
 }
