@@ -33,8 +33,16 @@ class Shopware_Controllers_Backend_PaulSaleBackendController extends Enlight_Con
             ->from('paul_sale');
         $stmt = $builder->execute();
         $result = $stmt->fetchAll();
-
         $this->view->assign('paulSaleEnrties', $result);
+
+
+        $builder = $connection->createQueryBuilder();
+        $builder->select('id', 'description')
+            ->from('s_categories');
+        $stmt = $builder->execute();
+        $result = $stmt->fetchAll();
+        $this->view->assign('shopCategories', $result);
+
     }
 
     public function listAction()
@@ -45,29 +53,19 @@ class Shopware_Controllers_Backend_PaulSaleBackendController extends Enlight_Con
 
             $queryBuilder = $connection->createQueryBuilder()
                 ->select('*')
-                ->from('paul_sale');
+                ->from('paul_sale', 'sale')
+                ->leftJoin('sale', 's_categories','cat', 'sale.saleCategoryId = cat.id')
+                ->orderBy('sale.id', 'DESC');
 
             $sales = $queryBuilder->execute();
+
+            $this->View()->assign(['sales' => $sales]);
 
         } catch (Exception $ex) {
             $this->addErrors($ex->getMessage());
         }
 
-        $this->View()->assign(['sales' => $sales]);
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityRepository|null|\PaulSale\Models\Repository
-     */
-    private function getSaleRepository()
-    {
-        if ($this->saleRepository === null) {
-            $this->saleRepository = $this->getModelManager()->getRepository('PaulSale\Models\Sale');
-        }
-
-        return $this->saleRepository;
-    }
-
 
 
     /**
@@ -123,6 +121,38 @@ class Shopware_Controllers_Backend_PaulSaleBackendController extends Enlight_Con
             $this->addErrors($ex->getMessage());
         }
     }
+
+
+
+    public function deleteAction()
+    {
+        $request = $this->Request();
+
+        if ($request->isPost()) {
+            $this->deleteExclusion($request->getPost('delete'));
+        }
+
+        $this->redirect([
+            'module' => 'backend',
+            'controller' => 'PaulSaleBackendController',
+            'action' => 'index'
+        ]);
+    }
+
+    public function deleteExclusion($saleID)
+    {
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->container->get('dbal_connection');
+        $builder = $connection->createQueryBuilder();
+
+        $builder->delete('paul_sale')
+            ->where('id = ?')
+            ->setParameter('0', $saleID);
+
+        $builder->execute();
+    }
+
+
 
     /**
      * Adds an error message to the session

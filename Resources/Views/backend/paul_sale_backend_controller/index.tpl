@@ -13,11 +13,15 @@
                   action="{url controller="PaulSaleBackendController" action="add"}">
 
 
+
                 <div class="form-group">
-                    <label for="windowTitle" class="col-sm-2 control-label">Kategorie ID</label>
+                    <label for="windowTitle" class="col-sm-2 control-label">Kategorie</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="windowTitle" name="saleCategoryId" required
-                               placeholder="Kategorie ID">
+                        <select name="saleCategoryId" class="form-control">
+                            {foreach $shopCategories as $category}
+                                <option value="{$category.id}">({$category.id}) {$category.description}</option>
+                            {/foreach}
+                        </select>
                     </div>
                 </div>
 
