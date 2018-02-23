@@ -1,5 +1,5 @@
 {if $paulShowSale}
     <div class="product--detail-upper block-group">
-        TEST
+        TEST123
     </div>
 {/if}
