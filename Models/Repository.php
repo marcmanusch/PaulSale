@@ -17,7 +17,7 @@ class Repository extends ModelRepository
     {
         /** @var $builder \Shopware\Components\Model\QueryBuilder */
         $builder = $this->getEntityManager()->createQueryBuilder()
-            ->select('validFrom', 'validTill', 'salePercentage', 'saleCategoryId')
+            ->select(['validFrom', 'validTill', 'salePercentage', 'saleCategoryId'])
             ->from(Sale::class, 'sale');
         return $builder;
     }

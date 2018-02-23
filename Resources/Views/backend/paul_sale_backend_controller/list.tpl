@@ -17,6 +17,16 @@
             </thead>
             <tbody>
 
+            {foreach $sales as $entryie}
+                <tr>
+                    <td>{$entryie.id}</td>
+                    <td>{$entryie.validFrom}</td>
+                    <td>{$entryie.validTill}</td>
+                    <td>{$entryie.saleCategoryId}</td>
+                    <td>{$entryie.salePercentage}</td>
+
+                </tr>
+            {/foreach}
             </tbody>
         </table>
     </div>

@@ -39,19 +39,25 @@ class Shopware_Controllers_Backend_PaulSaleBackendController extends Enlight_Con
 
     public function listAction()
     {
-        $filter = [];
-        $sort = [];
-        $limit = 1000;
-        $offset = 0;
+        try {
+            /** @var \Doctrine\DBAL\Connection $connection */
+            $connection = $this->container->get('dbal_connection');
 
-        $query = $this->getSaleRepository()->getListQuery();
-        $sales = $query->getArrayResult();
+            $queryBuilder = $connection->createQueryBuilder()
+                ->select('*')
+                ->from('paul_sale');
+
+            $sales = $queryBuilder->execute();
+
+        } catch (Exception $ex) {
+            $this->addErrors($ex->getMessage());
+        }
 
         $this->View()->assign(['sales' => $sales]);
     }
 
     /**
-     * @return \Doctrine\ORM\EntityRepository|null
+     * @return \Doctrine\ORM\EntityRepository|null|\PaulSale\Models\Repository
      */
     private function getSaleRepository()
     {
@@ -82,7 +88,7 @@ class Shopware_Controllers_Backend_PaulSaleBackendController extends Enlight_Con
 
         $this->redirect([
             'module' => 'backend',
-            'controller' => 'PaulQuestionsBackendController',
+            'controller' => 'PaulSaleBackendController',
             'action' => 'index'
         ]);
     }
