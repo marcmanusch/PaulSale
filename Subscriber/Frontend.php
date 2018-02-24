@@ -28,7 +28,6 @@ class Frontend implements SubscriberInterface
     {
         return [
             'Enlight_Controller_Action_PostDispatchSecure_Frontend' => 'onFrontendPostDispatch',
-            'Shopware_Modules_Basket_getPriceForUpdateArticle_FilterPrice' => 'checkRabatt'
         ];
     }
 
@@ -46,8 +45,39 @@ class Frontend implements SubscriberInterface
         // get plugin config
         $paulSaleActive = $config['paulSaleActive'];
 
-        // assign to frontend
-        $view->assign('paulSaleActive', $paulSaleActive);
+        $rabattArray = $this->checkRabatt($args);
+
+        if (!empty($rabattArray)) {
+            // assign sale banner to frontend
+            $view->assign('paulShowSale', true);
+            $view->assign('paulRabattArray', $rabattArray);
+        }
+
+
+    }
+
+    public function checkRabatt(\Enlight_Event_EventArgs $args)
+    {
+        /** @var $controller \Enlight_Controller_Action */
+        $controller = $args->getSubject();
+        $view = $controller->View();
+
+        // Get current category
+        $sCategoryCurrent = $view->sCategoryInfo['id'];
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->container->get('dbal_connection');
+
+        $queryBuilder = $connection->createQueryBuilder()
+            ->select('*')
+            ->from('paul_sale')
+            ->where('saleCategoryId = ?')
+            ->setParameter('0', $sCategoryCurrent);
+
+        $stmt = $queryBuilder->execute();
+
+        return $stmt->fetchAll();
+
     }
 
 }
