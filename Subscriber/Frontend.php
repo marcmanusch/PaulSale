@@ -28,6 +28,7 @@ class Frontend implements SubscriberInterface
     {
         return [
             'Enlight_Controller_Action_PostDispatchSecure_Frontend' => 'onFrontendPostDispatch',
+            'Shopware_Modules_Basket_getPriceForUpdateArticle_FilterPrice' => 'onFilterPrice'
         ];
     }
 
@@ -51,6 +52,7 @@ class Frontend implements SubscriberInterface
             // assign sale banner to frontend
             $view->assign('paulShowSale', true);
             $view->assign('paulRabattArray', $rabattArray);
+            $view->assign('paulSalePercentage', $rabattArray[0]['salePercentage']);
         }
 
 
@@ -77,6 +79,12 @@ class Frontend implements SubscriberInterface
         $stmt = $queryBuilder->execute();
 
         return $stmt->fetchAll();
+
+    }
+
+
+    public function onFilterPrice(\Enlight_Event_EventArgs $args)
+    {
 
     }
 
